@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free IPTV</title>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,39 +12,36 @@
             background-color: #121212;
             color: white;
         }
-
         .header {
             background-color: #1a1a1a;
             padding: 15px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #121212;
+            padding-bottom: 10px;
+        }
         .player-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
+            margin: 0 auto 10px auto;
             background: #000;
             border-radius: 8px;
             overflow: hidden;
-            height: 200px;
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
+            height: 200px; /* হাইট */
         }
-
         #clappr-player {
             width: 100%;
             height: 100%;
         }
-
         .category-filter {
-            padding: 20px;
+            padding: 10px 20px;
             text-align: center;
-            margin-top: 270px; /* প্লেয়ারের নিচে রাখার জন্য */
         }
-
         select {
             padding: 6px 30px;
             border-radius: 20px;
@@ -54,7 +49,6 @@
             color: white;
             border: none;
         }
-
         .channel-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -62,9 +56,7 @@
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
-            margin-top: 20px;
         }
-
         .channel-card {
             background: #1e1e1e;
             border-radius: 8px;
@@ -72,57 +64,52 @@
             cursor: pointer;
             transition: transform 0.3s;
         }
-
         .channel-card:hover {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(0, 150, 136, 0.5);
         }
-
         .channel-logo {
             width: 100%;
-            height: 100px;
+            height: 90px;
             object-fit: contain;
             background: #fff;
         }
-
         .channel-name {
             padding: 10px;
             text-align: center;
             font-size: 14px;
         }
-
-        /* Clappr কন্ট্রোল হাইড */
+        /* Clappr কন্ট্রোল বার হাইড */
         .clappr-container .media-control {
             display: none !important;
         }
     </style>
-
-    <!-- Clappr CDN -->
+    <!-- Clappr প্লেয়ার CDN -->
     <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-
 </head>
-
 <body>
 
-    <div class="player-container">
-        <div id="clappr-player"></div>
-    </div>
-
-    <div class="category-filter">
-        <select id="category-select">
-            <option value="all">All Channels</option>
-            <option value="Sports">Sports</option>
-            <option value="Bangla">Bangla</option>
-            <option value="Kolkata">Kolkata</option>
-            <option value="Music">Music</option>
-        </select>
+    <div class="sticky-wrapper">
+        <div class="player-container">
+            <div id="clappr-player"></div>
+        </div>
+        <div class="category-filter">
+            <select id="category-select">
+                <option value="all">𝐀𝐥𝐥 𝐂𝐡𝐚𝐧𝐧𝐞𝐥𝐬</option>
+                <option value="Sports">𝐒𝐩𝐨𝐫𝐭𝐬</option>
+                <option value="Bangla">𝐁𝐚𝐧𝐠𝐥𝐚</option>
+                <option value="Kolkata">𝐊𝐨𝐥𝐤𝐚𝐭𝐚</option>
+                <option value="Music">𝐌𝐮𝐬𝐢𝐜</option>
+            </select>
+        </div>
     </div>
 
     <div class="channel-list" id="channel-list"></div>
 
     <script>
+        // চ্যানেল ডাটা
         const channels = [
-            {
+           {
                 name: "T Sports 1",
                 logo: "https://i.postimg.cc/dtMLGbsK/20241005-165038.png",
                 url: "https://live.tsports.com/mobile_hls/tsports_live_1/playlist.m3u8",
@@ -267,6 +254,7 @@
                 category: "Music"
             },
         ];
+        // Clappr প্লেয়ার ইনিশিয়ালাইজ
         let player = new Clappr.Player({
             source: channels[0].url,
             parentId: "#clappr-player",
@@ -276,19 +264,16 @@
             width: '100%'
         });
 
+        // চ্যানেল লিস্ট রেন্ডার
         function renderChannels(filter = 'all') {
             const channelList = document.getElementById('channel-list');
             channelList.innerHTML = '';
-
-            const filteredChannels = filter === 'all'
-                ? channels
-                : channels.filter(ch => ch.category === filter);
-
+            const filteredChannels = filter === 'all' ? channels : channels.filter(ch => ch.category === filter);
             filteredChannels.forEach(channel => {
                 const card = document.createElement('div');
                 card.className = 'channel-card';
                 card.innerHTML = `
-                    <img src="${channel.logo}" alt="${channel.name}" class="channel-logo">
+                    <img src="${channel.logo}" alt="${channel.name}" class="channel-logo" loading="lazy">
                     <div class="channel-name">${channel.name}</div>
                 `;
                 card.addEventListener('click', () => {
@@ -298,13 +283,14 @@
             });
         }
 
+        // ক্যাটাগরি ফিল্টার
         document.getElementById('category-select').addEventListener('change', (e) => {
             renderChannels(e.target.value);
         });
 
+        // প্রাথমিক রেন্ডার
         renderChannels();
     </script>
 
 </body>
-
 </html>
