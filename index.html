@@ -1,113 +1,218 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free IPTV</title>
+
+    <title>লাইভ টিভি প্লেয়ার</title>
+
     <style>
+
         body {
+
             font-family: Arial, sans-serif;
+
             margin: 0;
+
             padding: 0;
+
             background-color: #121212;
+
             color: white;
+
         }
+
         .header {
+
             background-color: #1a1a1a;
+
             padding: 15px;
+
             text-align: center;
+
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+
         }
+
         .player-container {
+
             width: 100%;
+
             max-width: 500px; /* সাইজ ছোট */
+
             margin: 20px auto;
+
             background: #000;
+
             border-radius: 8px;
+
             overflow: hidden;
+
             height: 200px; /* হাইট কমানো */
+
         }
+
         #clappr-player {
+
             width: 100%;
+
             height: 100%;
+
         }
+
         .channel-list {
+
             display: grid;
+
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
             gap: 15px;
+
             padding: 20px;
+
             max-width: 1200px;
+
             margin: 0 auto;
+
         }
+
         .channel-card {
+
             background: #1e1e1e;
+
             border-radius: 8px;
+
             overflow: hidden;
+
             cursor: pointer;
+
             transition: transform 0.3s;
+
         }
+
         .channel-card:hover {
-            transform: scale(1.06);
+
+            transform: scale(1.05);
+
             box-shadow: 0 0 15px rgba(0, 150, 136, 0.5);
+
         }
+
         .channel-logo {
+
             width: 100%;
+
             height: 90px;
+
             object-fit: contain;
+
             background: #fff;
+
         }
+
         .channel-name {
+
             padding: 10px;
+
             text-align: center;
-            font-size: 15px;
+
+            font-size: 14px;
+
         }
+
         .category-filter {
+
             padding: 10px 20px;
+
             text-align: center;
+
         }
+
         select {
+
             padding: 6px 50px;
+
             border-radius: 20px;
+
             background: #333;
+
             color: white;
+
             border: none;
+
         }
+
         /* Clappr কন্ট্রোল বার হাইড */
+
         .clappr-container .media-control {
+
             display: none !important;
+
         }
+
     </style>
+
     <!-- Clappr প্লেয়ার CDN -->
+
     <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+
 </head>
-    <div style="position: fixed; bottom: 20px; right: 13px; z-index: 9999; background: rgb(0, 136, 204); padding: 8px 11px; border-radius: 26px; display: flex; align-items: center; box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 8px; transition: 5.1s;">
+<div style="position: fixed; bottom: 20px; right: 13px; z-index: 9999; background: rgb(0, 136, 204); padding: 8px 11px; border-radius: 26px; display: flex; align-items: center; box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 8px; transition: 5.1s;">
       <a href="https://t.me/rslivetv" target="_blank" style="display: flex; align-items: center; text-decoration: none; color: white;">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" alt="Telegram" style="width: 30px; height: 30px; margin-right: 8px;">
         <span style="font-weight: bold;">Telegram Join ✓ </span>
       </a>
     </div>
+
 <body>
 
+
+
     <div class="player-container">
+
         <div id="clappr-player"></div>
+
     </div>
 
+
+
     <div class="category-filter">
+
         <select id="category-select">
+
             <option value="all">All Channel</option>
-            <option value="Bangla">Bangla</option>
-            <option value="Kolkata">Kolkata</option>
+
             <option value="Sports">Sports</option>
+
+            <option           value="Bangla">Bangla</option>
+
+            <option value="Kolkata">Kolkata</option>
+
+            <option value="Music">Music</option>
+
         </select>
+
     </div>
+
+
 
     <div class="channel-list" id="channel-list"></div>
 
+
+
     <script>
+
         // চ্যানেল ডাটা
+
         const channels = [
 
-          {
+        
+
+        {
                 name: "T Sports 1",
                 logo: "https://i.postimg.cc/dtMLGbsK/20241005-165038.png",
                 url: "https://live.tsports.com/mobile_hls/tsports_live_1/playlist.m3u8",
@@ -254,343 +359,87 @@
         ];
 
         // Clappr প্লেয়ার ইনিশিয়ালাইজ
+
         let player = new Clappr.Player({
+
             source: channels[0].url,
+
             parentId: "#clappr-player",
+
             autoPlay: true,
+
             mute: false,
+
             height: '100%',
+
             width: '100%'
+
         });
 
-        // চ্যানেল লিস্ট রেন্ডার
-        function renderChannels(filter = 'all') {
-            const channelList = document.getElementById('channel-list');
-            channelList.innerHTML = '';
-            
-            const filteredChannels = filter === 'all' 
-                ? channels 
-                : channels.filter(ch => ch.category === filter);
-            
-            filteredChannels.forEach(channel => {
-                const card = document.createElement('div');
-                card.className = 'channel-card';
-                card.innerHTML = `
-                    <img src="${channel.logo}" alt="${channel.name}" class="channel-logo">
-                    <div class="channel-name">${channel.name}</div>
-                `;
-                card.addEventListener('click', () => {
-            <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free IPTV</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: white;
-        }
-        .header {
-            background-color: #1a1a1a;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        .player-container {
-            width: 100%;
-            max-width: 500px; /* সাইজ ছোট */
-            margin: 20px auto;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            height: 200px; /* হাইট কমানো */
-        }
-        #clappr-player {
-            width: 100%;
-            height: 100%;
-        }
-        .channel-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .channel-card {
-            background: #1e1e1e;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .channel-card:hover {
-            transform: scale(1.06);
-            box-shadow: 0 0 15px rgba(0, 150, 136, 0.5);
-        }
-        .channel-logo {
-            width: 100%;
-            height: 90px;
-            object-fit: contain;
-            background: #fff;
-        }
-        .channel-name {
-            padding: 10px;
-            text-align: center;
-            font-size: 15px;
-        }
-        .category-filter {
-            padding: 10px 20px;
-            text-align: center;
-        }
-        select {
-            padding: 6px 50px;
-            border-radius: 20px;
-            background: #333;
-            color: white;
-            border: none;
-        }
-        /* Clappr কন্ট্রোল বার হাইড */
-        .clappr-container .media-control {
-            display: none !important;
-        }
-    </style>
-    <!-- Clappr প্লেয়ার CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-</head>
-    <div style="position: fixed; bottom: 20px; right: 13px; z-index: 9999; background: rgb(0, 136, 204); padding: 8px 11px; border-radius: 26px; display: flex; align-items: center; box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 8px; transition: 5.1s;">
-      <a href="https://t.me/rslivetv" target="_blank" style="display: flex; align-items: center; text-decoration: none; color: white;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" alt="Telegram" style="width: 30px; height: 30px; margin-right: 8px;">
-        <span style="font-weight: bold;">Telegram Join ✓ </span>
-      </a>
-    </div>
-<body>
 
-    <div class="player-container">
-        <div id="clappr-player"></div>
-    </div>
-
-    <div class="category-filter">
-        <select id="category-select">
-            <option value="all">All Channel</option>
-            <option value="Bangla">Bangla</option>
-            <option value="Kolkata">Kolkata</option>
-            <option value="Sports">Sports</option>
-        </select>
-    </div>
-
-    <div class="channel-list" id="channel-list"></div>
-
-    <script>
-        // চ্যানেল ডাটা
-        const channels = [
-
-          {
-                name: "T Sports 1",
-                logo: "https://i.postimg.cc/dtMLGbsK/20241005-165038.png",
-                url: "https://live.tsports.com/mobile_hls/tsports_live_1/playlist.m3u8",
-                category: "Sports"
-            },
-
-          {
-                name: "T Sports 2",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThJeIJ7nGU2y9uCXWzA0ndZSf0wnDcW2buD1nOOOj1_r4C4KxSs85c9xCh&s=10",
-                url: "https://live.tsports.com/mobile_hls/tsports_live_2/playlist.m3u8",
-                category: "Sports"
-            },
-        
-        {
-                name: "Peace Tv",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8i5KgF9TjgpOvw5WlwogcMn2Rv_Mu1ACX6g&s",
-                url: "https://dzkyvlfyge.erbvr.com/PeaceTvBangla/tracks-v4a1/mono.m3u8?sid=JVhmV-tLj0-XcSZXdVuccw&bvr_flags=1&bvr_ch=PeaceTvBangla&bvr_bw=520000",
-                category: "Bangla"
-            },
-            
-            {
-                name: "Movie Bangla",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhp9K1xYSAos5HSupXcdwdV6cNVM8KUcYPoQ&s",
-                url: "http://alvetv.com/moviebanglatv/8080/index.m3u8",
-                category: "Bangla"
-            },
-            {
-                name: "Deepto",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-k4PvFV3oZuw39y2VxtUY7yrYt2-n8U2YTQ&s",
-                url: "https://byphdgllyk.gpcdn.net/hls/deeptotv/index.m3u8",
-                category: "Bangla"
-            },
-            {
-                name: "Deshi Tv",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzcaUxayuvUVXfKdv00cGqkVUc02WTWzijdyCUR4svvI0vXpv4R3gZPoHY&s=10",
-                url: "https://deshitv.deshitv24.net/live/myStream/playlist.m3u8",
-                category: "Bangla"
-            },
-            {
-                name: "Boishakhi Tv",
-                logo: "https://upload.wikimedia.org/wikipedia/en/thumb/c/c7/Boishakhi_TV_logo.svg/640px-Boishakhi_TV_logo.svg.png",
-                url: "https://boishakhi.sonarbanglatv.com/boishakhi/boishakhitv/index.m3u8",
-                category: "Bangla"
-            },
-            {
-                name: "My Tv",
-                logo: "https://pngtom.com/files/preview/960x960/31703685790qeqh7jxaikd89fvvm7tdeskmf0i51tyadobjvk5dyflpoqy7njnqnent9lypxhhoenilugj7ocx3qlomfrgtlqmicohqssbs7zjp.png",
-                url: "https://mytvbangla.com/0.m3u8",
-                category: "Bangla"
-            },
-
-            {
-                name: "Star Jalsha",
-                logo: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Star_Jalsha_logo_2023.png",
-                url: "http://kst.moonplex.net:8080/CH3/index.m3u8",
-                category: "Kolkata"
-            },
-
-            {
-                name: "Zee Bangla",
-                logo: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Zee_Bangla_logo.png",
-                url: "https://catchup.yuppcdn.net/amazonv2/36/preview/zeebangla/master/chunklist.m3u8",
-                category: "Kolkata"
-            },
-
-            {
-                name: "Enter10bangla",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSgAr7xYAwX_Fc1CcrfzfFSDwRTbi8FD11fzaEfiA6DMkQ0AZ1dHsPWkM&s=10",
-                url: "https://live-bangla.akamaized.net/liveabr/pub-iobanglakp3sff/live_720p/chunks.m3u8",
-                category: "Kolkata"
-            },
-
-            {
-                name: "Sananda",
-                logo: "https://static.wikia.nocookie.net/etv-gspn-bangla/images/4/48/Sananda_TV_logo_%282011%29.png/revision/latest?cb=20210428083412",
-                url: "https://live.sanonda.tv/sanonda/index.m3u8",
-                category: "Kolkata"
-            },
-
-            {
-                name: "Bangla Plus",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqXKWAk7HXhVSs3Ewv62AN6lHbIYa6aJ7yQ-0SpATAKWFr6KwVmItCyV_8&s=10",
-                url: "https://live-stream.utkalbongo.com/hls/livebanglatvstream.m3u8",
-                category: "Kolkata"
-            },
-
-            {
-                name: "Amar Digital",
-                logo: "https://dthlivetv.com/images/channel_icons/aamar_digital.png",
-                url: "https://live-stream.utkalbongo.com/utkalbongo/stream2/hls/amarbanglatwolivestream.m3u8",
-                category: "Kolkata"
-            },
-
-            {
-                name: "Amar Bangla",
-                logo: "https://static.wikia.nocookie.net/etv-gspn-bangla/images/c/c1/Amar_Bangla_logo.png/revision/latest?cb=20231124085721",
-                url: "https://live-stream.utkalbongo.com/utkalbongo/stream10/hls/amarbangla.m3u8",
-                category: "Kolkata"
-            },
-            {
-                name: "Moon Bangla",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhKvBiw19yjowInHgsc79YVBnNzcjPMJ8XDY378bM_fAXEttbkzfl3_R4i&s=10",
-                url: "https://live-stream.utkalbongo.com/utkalbongo/stream7/hls/montvlivestream.m3u8",
-                category: "Kolkata"
-            },
-
-                {
-                name: "Masti Subnetwork",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQid6aqF0q8sd-FJPZOGMiHrS1jmCUI_7j1nvfFdghf8-BVz2ATObd1VcVI&s=10",
-                url: "https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/mastiii/master.m3u8",
-                category: "Music"
-            },
-
-            {
-                name: "B4U Music",
-                logo: "https://jiotvimages.cdn.jio.com/dare_images/images/B4U_Music.png",
-                url: "https://d3kdywbtdfbp9z.cloudfront.net/v1/manifest/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/dff423e0-3c82-46d6-9ecb-3baa96b5694a/4598c408-0e38-488c-9b64-fc845d1ea2b6/0.m3u8",
-                category: "Music"
-            },
-            {
-                name: "Show Box",
-                logo: "https://upload.wikimedia.org/wikipedia/en/0/00/ShowBox_TV_logo.png",
-                url: "https://epiconvh.akamaized.net/live/showbox/master.m3u8",
-                category: "Music"
-            },
-            {
-                name: "Yrf Music",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUD7Ydv_pvSU5ddIrmpLRQnqxxPK0lNaidUa0hfS123XLhmqKnyR83-II&s=10",
-                url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01412-xiaomiasia-yrfmusic-xiaomi/playlist.m3u8",
-                category: "Music"
-            },
-            {
-                name: "9X Jalwa",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYD_BYDFjdjS0ZsIkSF7idPP7qQNIKDO-syi_NMI2Dt9CTlXCrXhTMe6pi&s=10",
-                url: "https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/9x-jalwa/47bdb49d-f6f3-4927-a9ea-12c4c5afc732/0.m3u8",
-                category: "Music"
-            },
-            {
-                name: "Joo Music",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRIGAljGXtc_ZMbcqXLAYxCEKHpc37QfNBdEMOjSPEFJoCVlCPAEot5AM&s=10",
-                url: "https://livecdn.live247stream.com/joomusic/tv/playlist.m3u8",
-                category: "Music"
-            },
-        ];
-
-        // Clappr প্লেয়ার ইনিশিয়ালাইজ
-        let player = new Clappr.Player({
-            source: channels[0].url,
-            parentId: "#clappr-player",
-            autoPlay: true,
-            mute: false,
-            height: '100%',
-            width: '100%'
-        });
 
         // চ্যানেল লিস্ট রেন্ডার
+
         function renderChannels(filter = 'all') {
+
             const channelList = document.getElementById('channel-list');
+
             channelList.innerHTML = '';
+
             
+
             const filteredChannels = filter === 'all' 
+
                 ? channels 
+
                 : channels.filter(ch => ch.category === filter);
+
             
+
             filteredChannels.forEach(channel => {
+
                 const card = document.createElement('div');
+
                 card.className = 'channel-card';
+
                 card.innerHTML = `
+
                     <img src="${channel.logo}" alt="${channel.name}" class="channel-logo">
+
                     <div class="channel-name">${channel.name}</div>
+
                 `;
+
                 card.addEventListener('click', () => {
+
                     player.load(channel.url);
+
                 });
+
                 channelList.appendChild(card);
+
             });
+
         }
 
-        // ক্যাটাগরি ফিল্টার
-        document.getElementById('category-select').addEventListener('change', (e) => {
-            renderChannels(e.target.value);
-        });
 
-        // প্রাথমিক রেন্ডার
-        renderChannels();
-    </script>
-</body>
-</html>
-        player.load(channel.url);
-                });
-                channelList.appendChild(card);
-            });
-        }
 
         // ক্যাটাগরি ফিল্টার
+
         document.getElementById('category-select').addEventListener('change', (e) => {
+
             renderChannels(e.target.value);
+
         });
 
+
+
         // প্রাথমিক রেন্ডার
+
         renderChannels();
+
     </script>
+
 </body>
+
 </html>
